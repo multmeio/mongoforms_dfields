@@ -16,6 +16,7 @@ class DynamicFields(Document):
     max_length = IntField()
     min_value = IntField()
     max_value = IntField()
+    required = BooleanField(default=False)
     choices = ListField(required=False)
 
     @classmethod
@@ -28,6 +29,7 @@ class DynamicFields(Document):
             ddynamic_fields[df.name].max_length = df.max_length
             ddynamic_fields[df.name].min_value = df.min_value
             ddynamic_fields[df.name].max_value = df.max_value
+            ddynamic_fields[df.name].required = df.required
             ddynamic_fields[df.name].choices = df.choices
         return ddynamic_fields
 
