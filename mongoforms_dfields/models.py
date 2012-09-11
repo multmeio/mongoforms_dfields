@@ -21,17 +21,19 @@ class DynamicFields(Document):
 
     @classmethod
     def _dfields(cls, refer):
-        dynamic_fields = cls.objects.filter(refer = refer)
-        ddynamic_fields = {}
-        for df in dynamic_fields:
-            ddynamic_fields[df.name] = eval(df.typo)()
-            ddynamic_fields[df.name].name = df.name
-            ddynamic_fields[df.name].max_length = df.max_length
-            ddynamic_fields[df.name].min_value = df.min_value
-            ddynamic_fields[df.name].max_value = df.max_value
-            ddynamic_fields[df.name].required = df.required
-            ddynamic_fields[df.name].choices = df.choices
-        return ddynamic_fields
+        def _call(*args):
+            dynamic_fields = cls.objects.filter(refer = refer)
+            ddynamic_fields = {}
+            for df in dynamic_fields:
+                ddynamic_fields[df.name] = eval(df.typo)()
+                ddynamic_fields[df.name].name = df.name
+                ddynamic_fields[df.name].max_length = df.max_length
+                ddynamic_fields[df.name].min_value = df.min_value
+                ddynamic_fields[df.name].max_value = df.max_value
+                ddynamic_fields[df.name].required = df.required
+                ddynamic_fields[df.name].choices = df.choices
+            return ddynamic_fields
+        return _call
 
     def __unicode__(self):
         return u"[%s] %s: %s" % (self.refer, self.typo, self.name)
