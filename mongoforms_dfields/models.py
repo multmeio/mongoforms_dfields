@@ -5,8 +5,11 @@ __all__ = ['DynamicFields', 'has_dfields']
 
 
 def has_dfields(cls):
-    cls._dfields = DynamicFields._dfields(cls.__name__)
-    return cls
+    class new_cls(cls):
+        @property
+        def _dfields(self):
+            return DynamicFields._dfields(cls.__class__.__name__)
+    return new_cls
 
 # Create your models here.
 class DynamicFields(Document):
@@ -21,7 +24,6 @@ class DynamicFields(Document):
 
     @classmethod
     def _dfields(cls, refer):
-        def _call(*args):
             dynamic_fields = cls.objects.filter(refer = refer)
             ddynamic_fields = {}
             for df in dynamic_fields:
@@ -33,7 +35,6 @@ class DynamicFields(Document):
                 ddynamic_fields[df.name].required = df.required
                 ddynamic_fields[df.name].choices = df.choices
             return ddynamic_fields
-        return _call
 
     def __unicode__(self):
         return u"[%s] %s: %s" % (self.refer, self.typo, self.name)
