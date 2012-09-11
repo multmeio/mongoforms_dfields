@@ -11,7 +11,7 @@ def read(fname):
 
 setup(
     name='mongoforms_dfields',
-    version='0.2',
+    version='0.2.1',
     description='A ModelForm-DynamicFields',
     author=u'Luís Araújo',
     author_email='luis@multmeio.com.br',
