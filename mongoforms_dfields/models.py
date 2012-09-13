@@ -8,8 +8,11 @@ def has_dfields(cls):
     class new_cls(cls):
         @property
         def _dfields(self):
-            return DynamicFields._dfields(cls.__class__.__name__)
-    return new_cls
+            return DynamicFields._dfields(self.__class__.__name__)
+    #return new_cls
+
+    cls._dfields = DynamicFields._dfields(cls.__name__)
+    return cls
 
 # Create your models here.
 class DynamicFields(Document):
